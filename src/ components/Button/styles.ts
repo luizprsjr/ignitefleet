@@ -13,7 +13,7 @@ export const Container = styled.TouchableOpacity`
 `
 export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.white};
-  font-size: ${({ theme }) => theme.font_size.md};
+  font-size: ${({ theme }) => theme.font_size.md}px;
   font-family: ${({ theme }) => theme.font_family.bold};
 `
 export const Loading = styled.ActivityIndicator.attrs(({ theme }) => ({
