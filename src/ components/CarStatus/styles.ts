@@ -29,7 +29,7 @@ export const Message = styled.Text`
   font-family: ${({ theme }) => theme.font_family.regular};
   flex: 1;
   text-align: justify;
-  textAlignvertical: center;
+  textAlignVertical: center;
 `
 
 export const TextHighlight = styled.Text`
