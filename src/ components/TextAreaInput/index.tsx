@@ -1,4 +1,5 @@
-import { TextInputProps } from 'react-native'
+import React, { forwardRef } from 'react'
+import { TextInput, TextInputProps } from 'react-native'
 
 import theme from '../../theme'
 import { Label } from '../LicensePlateInput/styles'
@@ -6,19 +7,26 @@ import { Container, Input } from './styles'
 
 type Props = TextInputProps & {
   label: string
+  ref?: React.Ref<TextInput>
 }
 
-export function TextAreaInput({ label, ...rest }: Props) {
-  return (
-    <Container>
-      <Label>{label}</Label>
+const TextAreaInput = forwardRef<TextInput, Props>(
+  ({ label, ...rest }, ref) => {
+    return (
+      <Container>
+        <Label>{label}</Label>
 
-      <Input
-        placeholderTextColor={theme.colors.gray_400}
-        multiline
-        autoCapitalize="sentences"
-        {...rest}
-      />
-    </Container>
-  )
-}
+        <Input
+          ref={ref}
+          placeholderTextColor={theme.colors.gray_400}
+          multiline
+          autoCapitalize="sentences"
+          {...rest}
+        />
+      </Container>
+    )
+  },
+)
+
+TextAreaInput.displayName = 'TextAreaInput'
+export { TextAreaInput }
