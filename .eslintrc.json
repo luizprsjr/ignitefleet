@@ -4,6 +4,15 @@
   ], 
   "rules": {
     "camelcase": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "react/self-closing-comp": ["error", {
+      "component": true,
+      "html": true
+    }],
+    "prettier/prettier": ["error", {
+      "semi": false,
+      "singleQuote": true
+      // "jsxSingleQuote": true
+    }]
   }
 }
