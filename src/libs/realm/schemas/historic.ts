@@ -3,7 +3,7 @@ import { Realm } from '@realm/react'
 type GenerateProps = {
   user_id: string
   description: string
-  license_id: string
+  license_plate: string
 }
 export class Historic extends Realm.Object<Historic> {
   _id!: string
@@ -13,11 +13,11 @@ export class Historic extends Realm.Object<Historic> {
   created_at!: string
   updated_at!: string
 
-  static generate({ user_id, license_id, description }: GenerateProps) {
+  static generate({ user_id, license_plate, description }: GenerateProps) {
     return {
       _id: new Realm.BSON.UUID(),
       user_id,
-      license_id,
+      license_plate,
       description,
       status: 'departure',
       created_at: new Date(),
@@ -38,7 +38,7 @@ export class Historic extends Realm.Object<Historic> {
       license_plate: 'string',
       description: 'string',
       status: 'string',
-      create_at: 'date',
+      created_at: 'date',
       updated_at: 'date',
     },
   }
