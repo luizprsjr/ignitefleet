@@ -7,7 +7,6 @@ export const Container = styled.View`
   justify-content: space-between;
 
   background-color: ${({ theme }) => theme.colors.gray_700};
-  z-index: 1;
 `
 
 export const Title = styled.Text`
