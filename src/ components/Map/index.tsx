@@ -4,9 +4,11 @@ import MapView, {
   LatLng,
   MapViewProps,
   Marker,
+  Polyline,
   PROVIDER_GOOGLE,
 } from 'react-native-maps'
 
+import theme from '../../theme'
 import { IconBox } from '../IconBox'
 
 type Props = MapViewProps & {
@@ -44,9 +46,17 @@ export function Map({ coordinates, ...rest }: Props) {
       </Marker>
 
       {coordinates.length > 1 && (
-        <Marker identifier="arrival" coordinate={lastCoordinate}>
-          <IconBox icon={FlagCheckered} size="SMALL" />
-        </Marker>
+        <>
+          <Marker identifier="arrival" coordinate={lastCoordinate}>
+            <IconBox icon={FlagCheckered} size="SMALL" />
+          </Marker>
+
+          <Polyline
+            coordinates={[...coordinates]}
+            strokeColor={theme.colors.gray_700}
+            strokeWidth={7}
+          />
+        </>
       )}
     </MapView>
   )
