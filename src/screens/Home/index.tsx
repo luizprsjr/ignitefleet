@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
+import { Toast } from 'react-native-toast-message/lib/src/Toast'
 
 import { useNavigation } from '@react-navigation/native'
 import { Realm, useUser } from '@realm/react'
@@ -36,7 +37,7 @@ export function Home() {
     }
   }
 
-  const fetchVehicleInUse = useCallback(() => {
+  function fetchVehicleInUse() {
     try {
       const vehicle = historic.filtered("status = 'departure'")[0]
       setVehicleInUse(vehicle)
@@ -47,9 +48,9 @@ export function Home() {
       )
       console.log(error)
     }
-  }, [historic])
+  }
 
-  const fetchHistoric = useCallback(async () => {
+  async function fetchHistoric() {
     try {
       const response = historic.filtered(
         "status = 'arrival' SORT(created_at DESC)"
@@ -72,7 +73,7 @@ export function Home() {
       console.log(error)
       Alert.alert('Histórico', 'Não foi possível carregar o histórico.')
     }
-  }, [historic])
+  }
 
   function handleHistoricDetails(id: string) {
     navigate('arrival', { id })
@@ -87,25 +88,31 @@ export function Home() {
     if (percentage === 100) {
       await saveLastSyncTimeStamp()
       await fetchHistoric()
+
+      Toast.show({
+        type: 'info',
+        text1: 'Todos os dados estão sincronizado.',
+      })
     }
   }
 
   useEffect(() => {
     fetchVehicleInUse()
-  })
+  }, [])
 
   useEffect(() => {
     realm.addListener('change', () => fetchVehicleInUse())
 
     return () => {
-      if (realm && !realm.isClosed)
+      if (realm && !realm.isClosed) {
         realm.removeListener('change', fetchVehicleInUse)
+      }
     }
-  }, [fetchVehicleInUse, realm])
+  }, [])
 
   useEffect(() => {
     fetchHistoric()
-  }, [historic, fetchHistoric])
+  }, [historic])
 
   useEffect(() => {
     realm.subscriptions.update((mutableSubs, realm) => {
@@ -115,10 +122,11 @@ export function Home() {
 
       mutableSubs.add(historicByUserQuery, { name: 'historic_by_user' })
     })
-  }, [realm, user])
+  }, [realm])
 
   useEffect(() => {
     const syncSession = realm.syncSession
+
     if (!syncSession) {
       return
     }
@@ -129,8 +137,10 @@ export function Home() {
       progressNotification
     )
 
-    return () => syncSession.removeProgressNotification(progressNotification)
-  })
+    return () => {
+      syncSession.removeProgressNotification(progressNotification)
+    }
+  }, [])
 
   return (
     <Container>
