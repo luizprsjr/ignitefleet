@@ -17,6 +17,7 @@ import { LicensePlateInput } from '../../ components/LicensePlateInput'
 import { TextAreaInput } from '../../ components/TextAreaInput'
 import { useRealm } from '../../libs/realm'
 import { Historic } from '../../libs/realm/schemas/historic'
+import { getAddressLocation } from '../../utils/getAddressLocation'
 import { licensePlateValidate } from '../../utils/licensePlateValidate'
 import { Container, Content, Message } from './styles'
 
@@ -92,7 +93,9 @@ export function Departure() {
         timeInterval: 1000,
       },
       (location) => {
-        console.log(location)
+        getAddressLocation(location.coords).then((address) =>
+          console.log(address)
+        )
       }
     ).then((response) => (subscription = response))
 
