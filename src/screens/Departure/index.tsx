@@ -1,4 +1,9 @@
-import { useForegroundPermissions } from 'expo-location'
+import {
+  LocationAccuracy,
+  LocationSubscription,
+  useForegroundPermissions,
+  watchPositionAsync,
+} from 'expo-location'
 import { useEffect, useRef, useState } from 'react'
 import { Alert, ScrollView, TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -73,6 +78,26 @@ export function Departure() {
   useEffect(() => {
     requestLocationForegroundPermission()
   }, [])
+
+  useEffect(() => {
+    if (!locationForegroundPermission?.granted) {
+      return
+    }
+
+    let subscription: LocationSubscription
+
+    watchPositionAsync(
+      {
+        accuracy: LocationAccuracy.High,
+        timeInterval: 1000,
+      },
+      (location) => {
+        console.log(location)
+      }
+    ).then((response) => (subscription = response))
+
+    return () => subscription.remove()
+  }, [locationForegroundPermission])
 
   if (!locationForegroundPermission?.granted) {
     return (
